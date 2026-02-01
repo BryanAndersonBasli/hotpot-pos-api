@@ -1,0 +1,642 @@
+{
+  "info": {
+    "_postman_id": "hotpot-pos-api",
+    "name": "Hotpot POS Firebase API",
+    "description": "Dokumentasi API Hotpot POS System menggunakan Firebase Firestore",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "🔐 Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\",\n  \"username\": \"john_doe\",\n  \"name\": \"John Doe\",\n  \"role\": \"customer\"\n}"
+            },
+            "url": {
+              "raw": "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key={{firebase_api_key}}",
+              "protocol": "https",
+              "host": [
+                "identitytoolkit.googleapis.com"
+              ],
+              "path": [
+                "v1",
+                "accounts:signUp"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "{{firebase_api_key}}"
+                }
+              ]
+            },
+            "description": "Register user baru di Firebase Authentication"
+          },
+          "response": []
+        },
+        {
+          "name": "Login User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\",\n  \"returnSecureToken\": true\n}"
+            },
+            "url": {
+              "raw": "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={{firebase_api_key}}",
+              "protocol": "https",
+              "host": [
+                "identitytoolkit.googleapis.com"
+              ],
+              "path": [
+                "v1",
+                "accounts:signInWithPassword"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "{{firebase_api_key}}"
+                }
+              ]
+            },
+            "description": "Login dan dapatkan ID Token"
+          },
+          "response": []
+        },
+        {
+          "name": "Logout User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{firebase_id_token}}"
+              }
+            ],
+            "url": {
+              "raw": "https://identitytoolkit.googleapis.com/v1/accounts:signOut?key={{firebase_api_key}}",
+              "protocol": "https",
+              "host": [
+                "identitytoolkit.googleapis.com"
+              ],
+              "path": [
+                "v1",
+                "accounts:signOut"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "{{firebase_api_key}}"
+                }
+              ]
+            },
+            "description": "Logout user"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🍲 Menu Items",
+      "item": [
+        {
+          "name": "Get All Menu Items",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{firebase_id_token}}"
+              }
+            ],
+            "url": {
+              "raw": "https://firestore.googleapis.com/v1/projects/{{firebase_project_id}}/databases/(default)/documents/menu_items",
+              "protocol": "https",
+              "host": [
+                "firestore.googleapis.com"
+              ],
+              "path": [
+                "v1",
+                "projects",
+                "{{firebase_project_id}}",
+                "databases",
+                "(default)",
+                "documents",
+                "menu_items"
+              ]
+            },
+            "description": "Ambil semua menu items dari Firestore"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Menu Item by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{firebase_id_token}}"
+              }
+            ],
+            "url": {
+              "raw": "https://firestore.googleapis.com/v1/projects/{{firebase_project_id}}/databases/(default)/documents/menu_items/{{menu_item_id}}",
+              "protocol": "https",
+              "host": [
+                "firestore.googleapis.com"
+              ],
+              "path": [
+                "v1",
+                "projects",
+                "{{firebase_project_id}}",
+                "databases",
+                "(default)",
+                "documents",
+                "menu_items",
+                "{{menu_item_id}}"
+              ]
+            },
+            "description": "Ambil menu item spesifik berdasarkan ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Add Menu Item",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{firebase_id_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fields\": {\n    \"name\": {\n      \"stringValue\": \"Kuah Hotpot Spesial\"\n    },\n    \"description\": {\n      \"stringValue\": \"Kuah premium dengan kaldu ayam dan rempah pilihan\"\n    },\n    \"price\": {\n      \"doubleValue\": 50000\n    },\n    \"category\": {\n      \"stringValue\": \"broth\"\n    },\n    \"image\": {\n      \"stringValue\": \"https://example.com/image.jpg\"\n    },\n    \"is_available\": {\n      \"booleanValue\": true\n    },\n    \"created_at\": {\n      \"timestampValue\": \"2024-02-01T10:00:00Z\"\n    }\n  }\n}"
+            },
+            "url": {
+              "raw": "https://firestore.googleapis.com/v1/projects/{{firebase_project_id}}/databases/(default)/documents/menu_items",
+              "protocol": "https",
+              "host": [
+                "firestore.googleapis.com"
+              ],
+              "path": [
+                "v1",
+                "projects",
+                "{{firebase_project_id}}",
+                "databases",
+                "(default)",
+                "documents",
+                "menu_items"
+              ]
+            },
+            "description": "Tambah menu item baru"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Menu Item",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{firebase_id_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fields\": {\n    \"price\": {\n      \"doubleValue\": 55000\n    },\n    \"is_available\": {\n      \"booleanValue\": false\n    }\n  }\n}"
+            },
+            "url": {
+              "raw": "https://firestore.googleapis.com/v1/projects/{{firebase_project_id}}/databases/(default)/documents/menu_items/{{menu_item_id}}",
+              "protocol": "https",
+              "host": [
+                "firestore.googleapis.com"
+              ],
+              "path": [
+                "v1",
+                "projects",
+                "{{firebase_project_id}}",
+                "databases",
+                "(default)",
+                "documents",
+                "menu_items",
+                "{{menu_item_id}}"
+              ]
+            },
+            "description": "Update menu item (harga, ketersediaan, dll)"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Menu Item",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{firebase_id_token}}"
+              }
+            ],
+            "url": {
+              "raw": "https://firestore.googleapis.com/v1/projects/{{firebase_project_id}}/databases/(default)/documents/menu_items/{{menu_item_id}}",
+              "protocol": "https",
+              "host": [
+                "firestore.googleapis.com"
+              ],
+              "path": [
+                "v1",
+                "projects",
+                "{{firebase_project_id}}",
+                "databases",
+                "(default)",
+                "documents",
+                "menu_items",
+                "{{menu_item_id}}"
+              ]
+            },
+            "description": "Hapus menu item"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🛒 Orders",
+      "item": [
+        {
+          "name": "Get All Orders",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{firebase_id_token}}"
+              }
+            ],
+            "url": {
+              "raw": "https://firestore.googleapis.com/v1/projects/{{firebase_project_id}}/databases/(default)/documents/orders",
+              "protocol": "https",
+              "host": [
+                "firestore.googleapis.com"
+              ],
+              "path": [
+                "v1",
+                "projects",
+                "{{firebase_project_id}}",
+                "databases",
+                "(default)",
+                "documents",
+                "orders"
+              ]
+            },
+            "description": "Ambil semua orders"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Order by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{firebase_id_token}}"
+              }
+            ],
+            "url": {
+              "raw": "https://firestore.googleapis.com/v1/projects/{{firebase_project_id}}/databases/(default)/documents/orders/{{order_id}}",
+              "protocol": "https",
+              "host": [
+                "firestore.googleapis.com"
+              ],
+              "path": [
+                "v1",
+                "projects",
+                "{{firebase_project_id}}",
+                "databases",
+                "(default)",
+                "documents",
+                "orders",
+                "{{order_id}}"
+              ]
+            },
+            "description": "Ambil order spesifik"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{firebase_id_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fields\": {\n    \"customer_id\": {\n      \"stringValue\": \"cust_123\"\n    },\n    \"customer_name\": {\n      \"stringValue\": \"John Doe\"\n    },\n    \"table_number\": {\n      \"integerValue\": \"5\"\n    },\n    \"items\": {\n      \"arrayValue\": {\n        \"values\": [\n          {\n            \"mapValue\": {\n              \"fields\": {\n                \"menu_item_id\": {\n                  \"integerValue\": \"1\"\n                },\n                \"menu_item_name\": {\n                  \"stringValue\": \"Kuah Hotpot\"\n                },\n                \"quantity\": {\n                  \"integerValue\": \"2\"\n                },\n                \"price\": {\n                  \"doubleValue\": 50000\n                },\n                \"subtotal\": {\n                  \"doubleValue\": 100000\n                }\n              }\n            }\n          }\n        ]\n      }\n    },\n    \"total_amount\": {\n      \"doubleValue\": 100000\n    },\n    \"status\": {\n      \"stringValue\": \"pending\"\n    },\n    \"payment_status\": {\n      \"stringValue\": \"unpaid\"\n    },\n    \"created_at\": {\n      \"timestampValue\": \"2024-02-01T10:00:00Z\"\n    }\n  }\n}"
+            },
+            "url": {
+              "raw": "https://firestore.googleapis.com/v1/projects/{{firebase_project_id}}/databases/(default)/documents/orders",
+              "protocol": "https",
+              "host": [
+                "firestore.googleapis.com"
+              ],
+              "path": [
+                "v1",
+                "projects",
+                "{{firebase_project_id}}",
+                "databases",
+                "(default)",
+                "documents",
+                "orders"
+              ]
+            },
+            "description": "Buat order baru"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Order Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{firebase_id_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fields\": {\n    \"status\": {\n      \"stringValue\": \"completed\"\n    },\n    \"payment_status\": {\n      \"stringValue\": \"paid\"\n    }\n  }\n}"
+            },
+            "url": {
+              "raw": "https://firestore.googleapis.com/v1/projects/{{firebase_project_id}}/databases/(default)/documents/orders/{{order_id}}",
+              "protocol": "https",
+              "host": [
+                "firestore.googleapis.com"
+              ],
+              "path": [
+                "v1",
+                "projects",
+                "{{firebase_project_id}}",
+                "databases",
+                "(default)",
+                "documents",
+                "orders",
+                "{{order_id}}"
+              ]
+            },
+            "description": "Update status order (pending, completed, cancelled)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "💰 Sales",
+      "item": [
+        {
+          "name": "Get All Sales",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{firebase_id_token}}"
+              }
+            ],
+            "url": {
+              "raw": "https://firestore.googleapis.com/v1/projects/{{firebase_project_id}}/databases/(default)/documents/sales",
+              "protocol": "https",
+              "host": [
+                "firestore.googleapis.com"
+              ],
+              "path": [
+                "v1",
+                "projects",
+                "{{firebase_project_id}}",
+                "databases",
+                "(default)",
+                "documents",
+                "sales"
+              ]
+            },
+            "description": "Ambil semua data penjualan"
+          },
+          "response": []
+        },
+        {
+          "name": "Record Sale",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{firebase_id_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fields\": {\n    \"order_id\": {\n      \"stringValue\": \"order_123\"\n    },\n    \"amount\": {\n      \"doubleValue\": 150000\n    },\n    \"items\": {\n      \"arrayValue\": {\n        \"values\": []\n      }\n    },\n    \"payment_method\": {\n      \"stringValue\": \"cash\"\n    },\n    \"created_at\": {\n      \"timestampValue\": \"2024-02-01T10:00:00Z\"\n    }\n  }\n}"
+            },
+            "url": {
+              "raw": "https://firestore.googleapis.com/v1/projects/{{firebase_project_id}}/databases/(default)/documents/sales",
+              "protocol": "https",
+              "host": [
+                "firestore.googleapis.com"
+              ],
+              "path": [
+                "v1",
+                "projects",
+                "{{firebase_project_id}}",
+                "databases",
+                "(default)",
+                "documents",
+                "sales"
+              ]
+            },
+            "description": "Catat penjualan baru"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "👤 Users",
+      "item": [
+        {
+          "name": "Get User Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{firebase_id_token}}"
+              }
+            ],
+            "url": {
+              "raw": "https://firestore.googleapis.com/v1/projects/{{firebase_project_id}}/databases/(default)/documents/users/{{user_id}}",
+              "protocol": "https",
+              "host": [
+                "firestore.googleapis.com"
+              ],
+              "path": [
+                "v1",
+                "projects",
+                "{{firebase_project_id}}",
+                "databases",
+                "(default)",
+                "documents",
+                "users",
+                "{{user_id}}"
+              ]
+            },
+            "description": "Ambil profil user"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{firebase_id_token}}"
+              }
+            ],
+            "url": {
+              "raw": "https://firestore.googleapis.com/v1/projects/{{firebase_project_id}}/databases/(default)/documents/users",
+              "protocol": "https",
+              "host": [
+                "firestore.googleapis.com"
+              ],
+              "path": [
+                "v1",
+                "projects",
+                "{{firebase_project_id}}",
+                "databases",
+                "(default)",
+                "documents",
+                "users"
+              ]
+            },
+            "description": "Ambil semua users"
+          },
+          "response": []
+        },
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{firebase_id_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fields\": {\n    \"username\": {\n      \"stringValue\": \"john_doe\"\n    },\n    \"name\": {\n      \"stringValue\": \"John Doe\"\n    },\n    \"email\": {\n      \"stringValue\": \"john@example.com\"\n    },\n    \"role\": {\n      \"stringValue\": \"customer\"\n    },\n    \"created_at\": {\n      \"timestampValue\": \"2024-02-01T10:00:00Z\"\n    }\n  }\n}"
+            },
+            "url": {
+              "raw": "https://firestore.googleapis.com/v1/projects/{{firebase_project_id}}/databases/(default)/documents/users",
+              "protocol": "https",
+              "host": [
+                "firestore.googleapis.com"
+              ],
+              "path": [
+                "v1",
+                "projects",
+                "{{firebase_project_id}}",
+                "databases",
+                "(default)",
+                "documents",
+                "users"
+              ]
+            },
+            "description": "Buat user baru"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "firebase_api_key",
+      "value": "YOUR_FIREBASE_API_KEY",
+      "type": "string"
+    },
+    {
+      "key": "firebase_project_id",
+      "value": "YOUR_FIREBASE_PROJECT_ID",
+      "type": "string"
+    },
+    {
+      "key": "firebase_id_token",
+      "value": "YOUR_FIREBASE_ID_TOKEN",
+      "type": "string"
+    },
+    {
+      "key": "menu_item_id",
+      "value": "doc_id_menu",
+      "type": "string"
+    },
+    {
+      "key": "order_id",
+      "value": "doc_id_order",
+      "type": "string"
+    },
+    {
+      "key": "user_id",
+      "value": "user_uid",
+      "type": "string"
+    }
+  ]
+}
