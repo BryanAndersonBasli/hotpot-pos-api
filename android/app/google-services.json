@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "497377730403",
+    "project_id": "hotpot-611a8",
+    "storage_bucket": "hotpot-611a8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:497377730403:android:22def3bc4002d54e8f7d56",
+        "android_client_info": {
+          "package_name": "com.company.hotpot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "497377730403-qgdqc4h6n45eeol5ep8pktcj6einn8qd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRquAHCnPYGkJyPipcthKP0R6NQiBi5zM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "497377730403-qgdqc4h6n45eeol5ep8pktcj6einn8qd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
